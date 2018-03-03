@@ -232,7 +232,7 @@ class Batcher(object):
     self._vocab = vocab
     self._hps = hps
     self._single_pass = single_pass
-
+   # print(self._hps.__getattr__('batch_size'))
     # Initialize a queue of Batches waiting to be used, and a queue of Examples waiting to be batched
     self._batch_queue = Queue.Queue(self.BATCH_QUEUE_MAX)
     self._example_queue = Queue.Queue(self.BATCH_QUEUE_MAX * self._hps.batch_size)

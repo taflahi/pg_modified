@@ -54,13 +54,13 @@ class Vocab(object):
       self._count += 1
 
     # Read the vocab file and add words up to max_size
-    with open(vocab_file, 'r') as vocab_f:
+    with open(vocab_file, 'rb') as vocab_f:
       for line in vocab_f:
         pieces = line.split()
         if len(pieces) != 2:
           print('Warning: incorrectly formatted line in vocabulary file: %s\n' % line)
           continue
-        w = pieces[0]
+        w = pieces[0].decode('utf-8')
         if w in [SENTENCE_START, SENTENCE_END, UNKNOWN_TOKEN, PAD_TOKEN, START_DECODING, STOP_DECODING]:
           raise Exception('<s>, </s>, [UNK], [PAD], [START] and [STOP] shouldn\'t be in the vocab file, but %s is' % w)
         if w in self._word_to_id:
@@ -229,14 +229,15 @@ def abstract2sents(abstract):
     sents: List of sentence strings (no tags)"""
   cur = 0
   sents = []
-  while True:
-    try:
-      start_p = abstract.index(SENTENCE_START, cur)
-      end_p = abstract.index(SENTENCE_END, start_p + 1)
-      cur = end_p + len(SENTENCE_END)
-      sents.append(abstract[start_p+len(SENTENCE_START):end_p])
-    except ValueError as e: # no more sentences
-      return sents
+  return [abstract]
+  #while True:
+  #  try:
+  #    start_p = abstract.index(SENTENCE_START, cur)
+  #    end_p = abstract.index(SENTENCE_END, start_p + 1)
+  #    cur = end_p + len(SENTENCE_END)
+  #    sents.append(abstract[start_p+len(SENTENCE_START):end_p])
+  #  except ValueError as e: # no more sentences
+  #    return sents
 
 
 def show_art_oovs(article, vocab):
